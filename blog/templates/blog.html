@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Entries</title>
+</head>
+<body>
+
+{% if request.user.username %}
+    <h1>Welcome {{ request.user.username }}</h1>
+    <a href="/users/logout">Logout</a>
+{% endif %}
+
+<ol>
+{{ entries }}
+    {% for entry in entires %}
+        <li>
+            <h1>{{ entry.name }}</h1>
+            <p>{{ entry.description }}</p>
+            {% for tag in entry.tags.all %}
+                {{ tag.name }}
+            {% endfor %}
+            <p>written by: {{ entry.owner }}</p>
+        </li>
+    {% endfor %}
+</ol>
+
+<form method="POST">
+    {% csrf_token %}
+    <label for="name" style="padding-right: 3cm">  The title:</label>
+    <label for="description" style="padding-right: 2.5cm"> Description: </label>
+    <label for="tags">Click tags:</label></br>
+
+    <input id="name" name = "name" type="text" maxlength="220">
+    <input id="description" name="description" type="text" maxlength="520">
+    <select id="tags" name="tags" multiple>
+        {% for tag in tags %}
+            <option value="{{ tag.id }}" >{{ tag.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Submit</button>
+</form></br>
+
+</body>
+</html>
